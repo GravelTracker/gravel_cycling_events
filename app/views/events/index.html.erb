@@ -1,0 +1,6 @@
+<div>
+  <h1><%= @events.count %></h1>
+  <% @events.each do |event| %>
+    <p><%= event.attributes %><p>
+  <% end %>
+</div>

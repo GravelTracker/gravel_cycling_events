@@ -30,6 +30,9 @@ gem 'mongoid', '~> 7.0.5'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'rspec'
+  gem 'rspec-rails'
+  gem 'pry'
 end
 
 group :development do
@@ -38,7 +41,6 @@ group :development do
   gem 'web-console', '>= 3.3.0'
   # Spring speeds up development by keeping your application running in the background.
   # Read more: https://github.com/rails/spring
-  gem 'rspec'
   gem 'rubocop'
   gem 'rubocop-rails'
   gem 'spring'
