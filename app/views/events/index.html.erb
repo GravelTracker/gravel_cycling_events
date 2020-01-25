@@ -1,6 +1,18 @@
+<h1>Currently tracking <%= @events.count %> upcoming gravel events</h1>
+
 <div>
-  <h1><%= @events.count %></h1>
+  <% prev_month = 0 %>
   <% @events.each do |event| %>
-    <p><%= event.attributes %><p>
+    <% if (event.start_month > prev_month) || (prev_month == 12 && event.start_month == 1) %>
+      <% prev_month = event.start_month %>
+      <h1><%= event.start_month_string %> <%= event.start_year %></h1>
+    <% end%>
+    <p><%= event.name %></p>
+    <p><%= event.location %></p>
+    <p><%= event.start_date %></p>
+    <p><%= event.start_hour %> <%= event.time_zone%></p>
+    <p><%= event.description %></p>
+    <p><%= event.contact %></p>
+    <p><%= event.image_url %></p>
   <% end %>
 </div>
