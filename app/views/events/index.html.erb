@@ -6,24 +6,26 @@
   <% @events.each do |events| %>
     <div class='event-container col-10 offset-1 col-sm-8 offset-sm-2 col-md-6 offset-md-3 mt-5'>
       <h2 class='events-date-header my-2 py-2'>
-        <%= events.first.start_month_string %> <%= events.first.start_year %>
+        <%= events.first.parsed_start_month_string %> <%= events.first.parsed_start_year %>
       </h2>
     <% events.each do |event| %>
       <hr class='event-separator py-0 my-0 mx-0 px-0'>
       <div id='<%= event['id'] %>' class='event-name-row row py-0 my-0'>
-        <p class='col'><%= event.start_date %></p>
-        <p class='col-4'><strong><%= event.name %></strong></p>
-        <p class='col-4'><%= event.location %></p>
-        <p class='col time-zone'><i><%= event.start_hour %> <%= event.time_zone%></i></p>
+        <p class='col'><%= event.parsed_start_date %></p>
+        <p class='col-4'><strong><%= event.parsed_name %></strong></p>
+        <p class='col-4'><%= event.parsed_location %></p>
+        <p class='col time-zone'><i><%= event.parsed_start_hour %> <%= event.parsed_time_zone%></i></p>
       </div>
       <div id='<%= event['id'] %>' class='event-summary collapsible'>
-        <%= link_to image_tag(event.image_url), event.url %>
-        <p><%= event.description %></p>
-        <p><%= event.contact %></p>
+        <%= link_to image_tag(event.parsed_image_url), event.parsed_url %>
+        <p><%= event.parsed_description %></p>
+        <p><%= event.parsed_contact %></p>
       </div>
     <% end %>
     </div>
   <% end %>
+  <br>
+  <br>
 </div>
 
 <script>

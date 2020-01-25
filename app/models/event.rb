@@ -2,58 +2,73 @@
 
 class Event
   include Mongoid::Document
+  include Mongoid::Attributes::Dynamic
 
-  def name
+  field :title
+  field :description
+  field :location
+  field :url
+  field :image_url
+  field :time_zone
+  field :start_time
+
+  validates_presence_of :title
+  validates_presence_of :location
+  validates_presence_of :url
+  validates_presence_of :start_time
+  validates_presence_of :time_zone
+
+  def parsed_name
     self['summary'].split(' – ').first
   end
 
-  def location
+  def parsed_location
     self['summary'].split(' – ').second
   end
 
-  def start_date
-    start_time.strftime('%B %d, %Y')
+  def parsed_start_date
+    parsed_start_time.strftime('%B %d, %Y')
   end
 
-  def start_month
-    start_time.month
+  def parsed_start_month
+    parsed_start_time.month
   end
 
-  def start_month_string
-    start_time.strftime('%B')
+  def parsed_start_month_string
+    parsed_start_time.strftime('%B')
   end
 
-  def start_year
-    start_time.year
+  def parsed_start_year
+    parsed_start_time.year
   end
 
-  def start_hour
-    start_time.strftime('%l:%M%p')
+  def parsed_start_hour
+    parsed_start_time.strftime('%l:%M%p')
   end
 
-  def time_zone
+  def parsed_time_zone
     self['time_zone'].gsub('_', ' ')
   end
 
-  def description
+  def parsed_description
     self['description']
   end
 
-  def contact
+  def parsed_contact
     self['contact']
   end
 
-  def image_url
+  def parsed_image_url
     self['thumbnail_url']
   end
 
-  def url
+  def parsed_url
     self['url']
   end
 
   private
 
-  def start_time
+  def parsed_start_time
     self['start_time'].to_datetime
   end
 end

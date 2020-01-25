@@ -1,0 +1,15 @@
+<div class='form-row row mx-0 my-5'>
+  <div class='form-container col-8 offset-2'>
+    <h1 class='form-header text-center'>Submit a new event</h1>
+    <%= bootstrap_form_for(@event, layout: :horizontal) do |f| %>
+      <%= f.text_field :title, required: true, help: 'Your event title' %>
+      <%= f.text_field :location, required: true, help: 'Location (preferably state and country)' %>
+      <%= f.text_area :description, help: 'Description of the event. Optional, but recommended' %>
+      <%= f.url_field :url, required: true, help: 'URL to event page' %>
+      <%= f.time_select :start_time, required: true, help: 'Event start time' %>
+      <%= f.time_zone_select :time_zone %>
+      <%= f.url_field :image_url, help: 'Direct link to a promo image' %>
+      <%= f.button :submit %>
+    <% end %>
+  </div>
+</div>

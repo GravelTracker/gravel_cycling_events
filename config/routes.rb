@@ -2,5 +2,5 @@
 
 Rails.application.routes.draw do
   root to: 'static_pages#index'
-  resources :events, only: :index
+  resources :events, only: [:index, :new, :create]
 end
