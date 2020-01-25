@@ -1,6 +1,6 @@
 <div class="jumbotron">
   <h1 class="display-4">Welcome to the /r/gravelcycling companion app!</h1>
-  <p class="lead">We're currently tracking <%= @events %> upcoming gravel events</p>
+  <p class="lead">We're currently tracking <%= @events.flatten.count %> upcoming gravel events</p>
   <hr class="my-4">
   <div class="row">
     <p class="lead mx-3">

@@ -47,6 +47,10 @@ class Event
     self['thumbnail_url']
   end
 
+  def url
+    self['url']
+  end
+
   private
 
   def start_time
