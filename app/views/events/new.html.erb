@@ -5,10 +5,11 @@
       <%= f.text_field :title, required: true, help: 'Your event title' %>
       <%= f.text_field :location, required: true, help: 'Location (preferably state and country)' %>
       <%= f.text_area :description, help: 'Description of the event. Optional, but recommended' %>
-      <%= f.url_field :url, required: true, help: 'URL to event page' %>
-      <%= f.time_select :start_time, required: true, help: 'Event start time' %>
+      <%= f.url_field :url, required: true, label: 'Event URL', help: 'URL to event page' %>
+      <%= f.date_field :date, required: true, label: 'Event date'%>
+      <%= f.time_field :start_time, required: true, help: 'Event start time' %>
       <%= f.time_zone_select :time_zone %>
-      <%= f.url_field :image_url, help: 'Direct link to a promo image' %>
+      <%= f.url_field :image_url, label: 'Image URL', help: 'Direct link to a promo image' %>
       <%= f.button :submit %>
     <% end %>
   </div>

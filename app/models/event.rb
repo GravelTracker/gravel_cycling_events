@@ -9,15 +9,10 @@ class Event
   field :location
   field :url
   field :image_url
+  field :date
   field :time_zone
   field :start_time
-
-  validates_presence_of :title
-  validates_presence_of :location
-  validates_presence_of :url
-  validates_presence_of :start_time
-  validates_presence_of :time_zone
-
+  
   def parsed_name
     self['summary'].split(' – ').first
   end

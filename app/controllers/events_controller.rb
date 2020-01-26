@@ -10,10 +10,10 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = Event.create(event_params)
+    @event = Event.create(build_record)
 
     if @event.valid?
-      redirect_to 'static_pages#upload'
+      render 'static_pages/upload'
     else
       render :new, status: :unprocessable_entity
     end
@@ -22,13 +22,29 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event).permit(:title,
-                                  :description,
+    params.require(:event).permit(:updated,
+                                  :summary,
+                                  :start_time,
+                                  :time_zone,
                                   :location,
                                   :url,
-                                  :image_url,
-                                  :time_zone,
-                                  :start_time)
+                                  :thumbnail_url,
+                                  :insertion_type,
+                                  :active)
+  end
+
+  def build_record
+    {
+      updated: DateTime.current.to_s,
+      summary: [params['event'][:title], params['event'][:location]].join(' – '),
+      start_time: DateTime.strptime(params['event'][:date] + 'T' + params['event'][:start_time], '%Y-%m-%dT%H:%M'),
+      time_zone: params['event'][:time_zone],
+      location: params['event'][:location],
+      url: params['event'][:url],
+      thumbnail_url: params['event'][:image_url],
+      insertion_type: 'user',
+      active: false
+    }
   end
 
   def sorted_events
