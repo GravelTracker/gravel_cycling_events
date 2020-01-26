@@ -37,7 +37,7 @@ class EventsController < ApplicationController
     {
       updated: DateTime.current.to_s,
       summary: [params['event'][:title], params['event'][:location]].join(' – '),
-      start_time: DateTime.strptime(params['event'][:date] + 'T' + params['event'][:start_time], '%Y-%m-%dT%H:%M'),
+      start_time: build_start_time,
       time_zone: params['event'][:time_zone],
       location: params['event'][:location],
       url: params['event'][:url],
@@ -47,10 +47,17 @@ class EventsController < ApplicationController
     }
   end
 
+  def build_start_time
+    date = params['event'][:date] + 'T' + params['event'][:start_time]
+    DateTime.strptime(date, '%Y-%m-%dT%H:%M')
+  end
+
   def sorted_events
     current_month = 0
     events_array = []
-    Event.where(:start_time.gte => DateTime.current.to_date.to_datetime).each do |event|
+    events = Event.where(:start_time.gte => DateTime.current.to_date.to_datetime,
+                         active: true)
+    events.each do |event|
       events_array << [] if event.parsed_start_month != current_month
       events_array.last << event
       current_month = event.parsed_start_month

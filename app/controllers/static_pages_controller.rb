@@ -2,6 +2,7 @@
 
 class StaticPagesController < ApplicationController
   def index
-    @events = Event.where(:start_time.gte => DateTime.current.to_date.to_datetime)
+    @events = Event.where(:start_time.gte => DateTime.current.to_date.to_datetime,
+                          active: true)
   end
 end

@@ -12,7 +12,7 @@ class Event
   field :date
   field :time_zone
   field :start_time
-  
+
   def parsed_name
     self['summary'].split(' – ').first
   end
