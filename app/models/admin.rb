@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin
   include Mongoid::Document
   # Include default devise modules. Others available are:
@@ -6,8 +8,8 @@ class Admin
          :recoverable, :rememberable, :validatable
 
   ## Database authenticatable
-  field :email,              type: String, default: ""
-  field :encrypted_password, type: String, default: ""
+  field :email,              type: String, default: ''
+  field :encrypted_password, type: String, default: ''
 
   ## Recoverable
   field :reset_password_token,   type: String

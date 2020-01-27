@@ -34,3 +34,6 @@ Metrics/BlockNesting:
 
 Metrics/ParameterLists:
   Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
