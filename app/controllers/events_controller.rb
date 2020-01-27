@@ -57,6 +57,7 @@ class EventsController < ApplicationController
     events_array = []
     events = Event.where(:start_time.gte => DateTime.current.to_date.to_datetime,
                          active: true)
+                  .order(:start_time => 'asc')
     events.each do |event|
       events_array << [] if event.parsed_start_month != current_month
       events_array.last << event

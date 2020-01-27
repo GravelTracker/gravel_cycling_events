@@ -5,6 +5,14 @@ class Admin::EventsController < ApplicationController
     @events = sorted_events
   end
 
+  def update
+    Event.where(id: params[:id]).update(active: true)
+  end
+
+  def destroy
+    Event.where(id: params[:id]).destroy
+  end
+
   private
 
   def sorted_events

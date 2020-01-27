@@ -1,23 +1,32 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class='navbar navbar-expand-lg navbar-dark bg-dark'>
   <%= link_to 'GravelTracker', root_path, class: 'navbar-brand' %>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+  <button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation'>
+    <span class='navbar-toggler-icon'></span>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto align-items-center">
-      <li class="nav-item <%= current_page?(root_path) ? 'active' : '' %>">
+  <div class='collapse navbar-collapse' id='navbarSupportedContent'>
+    <ul class='navbar-nav mr-auto align-items-center'>
+      <li class='nav-item <%= current_page?(root_path) ? 'active' : '' %>'>
         <%= link_to 'Home', root_path, class: 'nav-link' %>
       </li>
-      <li class="nav-item <%= current_page?(events_path) ? 'active' : '' %> ">
+      <li class='nav-item <%= current_page?(events_path) ? 'active' : '' %> '>
         <%= link_to 'Events', events_path, class: 'nav-link' %>
       </li>
-      <li class="nav-item <%= current_page?(new_event_path) ? 'active' : '' %> ">
+      <li class='nav-item <%= current_page?(new_event_path) ? 'active' : '' %> '>
         <%= link_to 'Submit an Event', new_event_path, class: 'nav-link' %>
       </li>
+      <% if current_admin %>
+        <li class='nav-item border border-warning <%= current_page?(admin_events_path) ? 'active' : '' %> '>
+          <%= link_to 'Moderation Queue', admin_events_path, class: 'nav-link' %>
+        </li>
+      <% end %>
     </ul>
   </div>
   <div class='row justify-content-end align-items-center'>
-    <%= button_to "Administration Panel", events_path, :method => "get", class:"btn btn-outline-warning my-2 my-sm-0" %>
+    <% if current_admin %>
+      <%= button_to 'Sign out of Admin Panel', destroy_admin_session_path, :method => 'delete', class:'btn btn-outline-warning my-2 my-sm-0' %>
+    <% else %>
+      <%= button_to 'Administration Panel', new_admin_session_path, :method => 'get', class:'btn btn-outline-warning my-2 my-sm-0' %>
+    <% end %>
   </div>
 </nav>

@@ -1,10 +1,10 @@
 <div class='header-row row mx-0'>
-  <h1 class='main-header text-center py-1'>Currently tracking <%= @events.flatten.count %> upcoming gravel events</h1>
+  <h1 class='main-header text-center py-1'><%= pluralize(@events.flatten.count, 'entry', plural: 'entries') %> for review</h1>
 </div>
 
 <div>
   <% @events.each do |events| %>
-    <div class='event-container col-10 offset-1 col-sm-8 offset-sm-2 col-md-6 offset-md-3 mt-5'>
+    <div class='event-container col-12 col-md-10 offset-md-1 mt-5'>
       <h2 class='events-date-header my-2 py-2'>
         <%= events.first.parsed_start_month_string %> <%= events.first.parsed_start_year %>
       </h2>
@@ -15,6 +15,8 @@
         <p class='col-4'><strong><%= event.parsed_name %></strong></p>
         <p class='col-4'><%= event.parsed_location %></p>
         <p class='col time-zone'><i><%= event.parsed_start_hour %> <%= event.parsed_time_zone%></i></p>
+        <%= button_to 'Accept', { action: 'update', id: event.id }, { class: 'btn btn-success', method: 'put' } %>
+        <%= button_to 'Reject', { action: 'destroy', id: event.id }, { class: 'btn btn-danger', method: 'delete' } %>
       </div>
       <div id='<%= event['id'] %>' class='event-summary collapsible'>
         <%= link_to image_tag(event.parsed_image_url), event.parsed_url %>
