@@ -23,7 +23,12 @@
         <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
       </div>
 
-      <div class="actions">
+      <div class="field">
+        <%= f.label :sign_up_code %><br />
+        <%= f.password_field :sign_up_code, autocomplete: "sign-up-code" %>
+      </div>
+
+      <div class="actions mt-2">
         <%= f.submit "Sign up", class: 'btn btn-primary' %>
       </div>
     <% end %>

@@ -2,6 +2,15 @@
 
 class Admin
   include Mongoid::Document
+
+  def accepted_signup_codes
+    Rails.application.credentials['sign_up_codes'].split(',')
+  end
+
+  validates :sign_up_code,
+            on: :create,
+            presence: true,
+            inclusion: { in: [] }
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -10,6 +19,7 @@ class Admin
   ## Database authenticatable
   field :email,              type: String, default: ''
   field :encrypted_password, type: String, default: ''
+  field :sign_up_code,       type: String, default: ''
 
   ## Recoverable
   field :reset_password_token,   type: String
