@@ -4,6 +4,17 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :set_bot_status
+
+  def set_bot_status
+    last_status = Status.last
+    time_delta = DateTime.current.to_i - last_status['post_time'].to_i
+    if time_delta > 15.minutes
+      @bot_status_color = 'offline'
+    else
+      @bot_status_color = last_status['status_code'] == 'success' ? 'success' : 'danger'
+    end
+  end
 
   protected
 

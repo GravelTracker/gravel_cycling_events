@@ -23,6 +23,7 @@
     </ul>
   </div>
   <div class='row justify-content-end align-items-center'>
+    <div class='navbar-bot-status'><%= link_to 'GravelCyclingBot Status', '/status', class: 'link' %><div class='dot bg-<%= @bot_status_color %> mx-2'>&nbsp;</div></div>
     <% if current_admin %>
       <%= button_to 'Sign out of Admin Panel', destroy_admin_session_path, :method => 'delete', class:'btn btn-outline-warning my-2 my-sm-0' %>
     <% else %>
