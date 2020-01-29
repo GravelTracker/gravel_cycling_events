@@ -1,0 +1,18 @@
+<h1 class='status-header bg-white px-2 py-2 col-10 offset-1 mb-0 mt-5 text-center'>/u/gravelcyclingbot Status</h1>
+<div class='uptime-status-row col-10 offset-1 my-0 pt-4 bg-white text-center'>
+  <div class='uptime-status mx-auto px-1 py-4 bg-<%= @status_color %>'>
+    <div class='status-message text-white'><h2><%= @status_message %></h2></div>
+    <div class='status-uptime text-white'>Reporting <%= @uptime %>% uptime over the last 24 hours.</div>
+  </div>
+</div>
+<div class='status-container bg-white px-2 py-4 col-10 offset-1 mt-0'>
+  <% code = @status_list.first['status_code'] %>
+  <% status = code == 'success' ? 'success' : code == 'error' ? 'danger' : 'secondary' %>
+  <div class='status-bar-row row mx-1 px-1 py-1 bg-dark'>
+    <% (@status_list.size - 1).downto(0).each do |i| %>
+      <% code = @status_list[i]['status_code'] %>
+      <% status = code == 'success' ? 'success' : code == 'error' ? 'danger' : 'secondary' %>
+      <div class='status-bar px-0 bg-<%= status %>'>&nbsp;</div>
+    <% end %>
+  </div>
+</div>

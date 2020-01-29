@@ -30,6 +30,7 @@ gem 'bootstrap_form', '~> 4.0'
 gem 'devise'
 gem 'jquery-rails'
 gem 'mongoid', '~> 7.0.5'
+gem 'jwt'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
