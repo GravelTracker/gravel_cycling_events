@@ -1,61 +1,65 @@
+# frozen_string_literal: true
+
 class Status
   include Mongoid::Document
   include Mongoid::Attributes::Dynamic
 
-  def self.build_status(stats_list)
-    result = Array.new(192, default_record)
-    return result if stats_list.empty?
+  class << self
+    def build_status(stats_list)
+      result = Array.new(192, default_record)
+      return result if stats_list.empty?
 
-    stats_list.each_with_index do |status, i|
-      if currently_offline?(status)
-        result << result.last
-        next
+      stats_list.each_with_index do |status, _i|
+        if currently_offline?(status)
+          result << result.last
+          next
+        end
+
+        result << if offline?(result.last) && interval(result.last, status) > 1
+                    result.last
+                  else
+                    status
+                  end
       end
+      result.reverse[0..191]
+    end
 
-      if offline?(result.last) && interval(result.last, status) > 1
-        result << result.last
-      else
-        result << status
+    def seed_db
+      192.times do |i|
+        Status.create(
+          post_time: DateTime.current + (i * 15).minutes,
+          status_code: %w[offline error success].sample
+        )
       end
     end
-    result.reverse[0..191]
-  end
 
-  def self.seed_db
-    192.times do |i|
-      Status.create({
-        post_time: DateTime.current + (i * 15).minutes,
-        status_code: %w[offline error success].sample,
-      })
+    def flush_status_db
+      Status.destroy_all
     end
-  end
 
-  def self.flush_status_db
-    Status.destroy_all
-  end
+    private
 
-  private
+    def interval(start_entry, end_entry)
+      time_delta = end_entry['post_time'].to_i - start_entry['post_time'].to_i
+      time_delta / 15.minutes
+    end
 
-  def self.interval(start_entry, end_entry)
-    time_delta = end_entry['post_time'].to_i - start_entry['post_time'].to_i
-    time_delta / 15.minutes
-  end
+    def offline?(item)
+      return if item.nil?
 
-  def self.offline?(item)
-    return if item.nil?
+      item['status_code'] == 'error' || item['status_code'] == 'offline'
+    end
 
-    item['status_code'] == 'error' || item['status_code'] == 'offline'
-  end
+    def currently_offline?(item)
+      time_delta = DateTime.current.to_i - item['post_time'].to_i
+      time_delta > 15.minutes
+    end
 
-  def self.currently_offline?(item)
-    time_delta = DateTime.current.to_i - item['post_time'].to_i
-    time_delta > 15.minutes
-  end
-
-  def self.default_record
-    { 
-      'status_code' => 'offline',
-      'post_time' => DateTime.current
-    }
+    def default_record
+      {
+        'status_code' => 'offline',
+        'post_time' => DateTime.current
+      }
+    end
   end
 end

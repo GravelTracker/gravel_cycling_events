@@ -37,3 +37,6 @@ Metrics/ParameterLists:
 
 Style/ClassAndModuleChildren:
   Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false

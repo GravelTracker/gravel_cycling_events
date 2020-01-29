@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StatusesController < ApplicationController
   def index
     @status_list = build_status
@@ -14,8 +16,9 @@ class StatusesController < ApplicationController
   end
 
   def calculate_uptime
-    uptime = @status_list.select {|x| x['status_code'] == 'success'}.count.to_f / @status_list.size * 100.0
-    sprintf("%.2f", uptime)
+    up_status_count = @status_list.select { |x| x['status_code'] == 'success' }.count.to_f
+    uptime = up_status_count / @status_list.size * 100.0
+    format('%.2f', uptime)
   end
 
   def status_message
@@ -29,6 +32,6 @@ class StatusesController < ApplicationController
     return @last_status_code if @last_status_code == 'success'
     return 'danger' if @last_status_code == 'error'
 
-    'secondary' 
+    'secondary'
   end
 end
