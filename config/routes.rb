@@ -7,5 +7,5 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :events, only: [:index, :update, :destroy]
   end
-  get '/status', to: 'statuses#index'
+  resources :status, only: [:index, :create], controller: 'statuses'
 end

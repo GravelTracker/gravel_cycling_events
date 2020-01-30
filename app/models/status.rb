@@ -7,7 +7,7 @@ class Status
   class << self
     def build_status(stats_list)
       result = Array.new(192, default_record)
-      return result if stats_list.empty?
+      return result if stats_list.count.zero?
 
       stats_list.each_with_index do |status, _i|
         if currently_offline?(status)
@@ -15,12 +15,13 @@ class Status
           next
         end
 
-        result << if offline?(result.last) && interval(result.last, status) > 1
-                    result.last
+        result << if interval(result.last, status) > 1
+                    default_record
                   else
                     status
                   end
       end
+      result = pad_offline(result)
       result.reverse[0..191]
     end
 
@@ -35,6 +36,13 @@ class Status
 
     def flush_status_db
       Status.destroy_all
+    end
+
+    def default_record(post_time = DateTime.current)
+      {
+        'status_code' => 'offline',
+        'post_time' => post_time
+      }
     end
 
     private
@@ -55,11 +63,11 @@ class Status
       time_delta > 15.minutes
     end
 
-    def default_record
-      {
-        'status_code' => 'offline',
-        'post_time' => DateTime.current
-      }
+    def pad_offline(result)
+      while interval(result.last, 'post_time' => DateTime.current) > 1
+        result << default_record(result['post_time'] + 15.minutes)
+      end
+      result
     end
   end
 end
