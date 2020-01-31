@@ -9,14 +9,12 @@ class Status
       result = Array.new(192, default_record)
       return result if stats_list.count.zero?
 
-      stats_list.each_with_index do |status, _i|
-        if currently_offline?(status)
-          result << result.last
-          next
-        end
-
-        result << if interval(result.last, status) > 1
-                    default_record
+      result << stats_list.first
+      stats_list.each do |status|
+        next if status == stats_list.first
+        
+        result << if interval(result.last, status) > 1 
+                    result.last
                   else
                     status
                   end
@@ -41,26 +39,20 @@ class Status
     def default_record(post_time = DateTime.current)
       {
         'status_code' => 'offline',
-        'post_time' => post_time
+        'post_time' => post_time,
+        'default' => true
       }
     end
 
     private
 
+    def default?(record)
+      record['default'].presence == true
+    end
+
     def interval(start_entry, end_entry)
-      time_delta = end_entry['post_time'].to_i - start_entry['post_time'].to_i
+      time_delta = start_entry['post_time'].to_i - end_entry['post_time'].to_i
       time_delta / 15.minutes
-    end
-
-    def offline?(item)
-      return if item.nil?
-
-      item['status_code'] == 'error' || item['status_code'] == 'offline'
-    end
-
-    def currently_offline?(item)
-      time_delta = DateTime.current.to_i - item['post_time'].to_i
-      time_delta > 15.minutes
     end
 
     def pad_offline(result)
