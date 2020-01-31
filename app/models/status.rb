@@ -34,7 +34,7 @@ class Status
       end
     end
 
-    def flush_status_db
+    def flush_db
       Status.destroy_all
     end
 
