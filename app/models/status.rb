@@ -12,8 +12,8 @@ class Status
       result << stats_list.first
       stats_list.each do |status|
         next if status == stats_list.first
-        
-        result << if interval(result.last, status) > 1 
+
+        result << if interval(result.last, status) > 1
                     result.last
                   else
                     status
@@ -36,10 +36,10 @@ class Status
       Status.destroy_all
     end
 
-    def default_record(post_time = DateTime.current)
+    def default_record
       {
         'status_code' => 'offline',
-        'post_time' => post_time,
+        'post_time' => DateTime.current,
         'default' => true
       }
     end
@@ -56,8 +56,10 @@ class Status
     end
 
     def pad_offline(result)
-      while interval(result.last, 'post_time' => DateTime.current) > 1
-        result << default_record(result['post_time'] + 15.minutes)
+      while interval({ 'post_time' => DateTime.current }, result.last) > 1
+        dummy_record = result.last
+        dummy_record['post_time'] += 15.minutes
+        result << dummy_record
       end
       result
     end

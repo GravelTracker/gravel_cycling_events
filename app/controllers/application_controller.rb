@@ -8,12 +8,7 @@ class ApplicationController < ActionController::Base
 
   def set_bot_status
     last_status = Status.count.positive? ? Status.last : Status.default_record
-    time_delta = DateTime.current.to_i - last_status['post_time'].to_i
-    @bot_status_color = if time_delta > 15.minutes
-                          'offline'
-                        else
-                          last_status['status_code'] == 'success' ? 'success' : 'danger'
-                        end
+    @bot_status_color = last_status['status_code'] == 'success' ? 'success' : 'danger'
   end
 
   protected
