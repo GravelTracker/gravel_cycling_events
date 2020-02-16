@@ -9,6 +9,7 @@ class Admin::EventsController < ApplicationController
 
   def update
     Event.where(id: params[:id]).update(active: true)
+    Notification.create(notification_params('update_monthly_post'))
   end
 
   def destroy
@@ -27,5 +28,12 @@ class Admin::EventsController < ApplicationController
       current_month = event.parsed_start_month
     end
     events_array
+  end
+
+  def notification_params(type)
+    {
+      updated_at: DateTime.current, 
+      type: type
+    }
   end
 end
