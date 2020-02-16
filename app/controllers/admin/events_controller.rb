@@ -32,7 +32,7 @@ class Admin::EventsController < ApplicationController
 
   def notification_params(type)
     {
-      updated_at: DateTime.current, 
+      updated_at: DateTime.current,
       type: type
     }
   end
