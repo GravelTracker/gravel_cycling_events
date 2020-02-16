@@ -4,7 +4,7 @@
 
 <div>
   <% @events.each do |events| %>
-    <div class='event-container col-12 col-md-10 offset-md-1 mt-5'>
+    <div class='event-container col-10 offset-1 col-sm-8 offset-sm-2 col-md-6 offset-md-3 mt-5'>
       <h2 class='events-date-header my-2 py-2'>
         <%= events.first.parsed_start_month_string %> <%= events.first.parsed_start_year %>
       </h2>
@@ -15,10 +15,12 @@
         <p class='col-4'><strong><%= event.parsed_name %></strong></p>
         <p class='col-4'><%= event.parsed_location %></p>
         <p class='col time-zone'><i><%= event.parsed_start_hour %> <%= event.parsed_time_zone%></i></p>
-        <%= button_to 'Accept', { action: 'update', id: event.id }, { class: 'btn btn-success', method: 'put' } %>
-        <%= button_to 'Reject', { action: 'destroy', id: event.id }, { class: 'btn btn-danger', method: 'delete' } %>
       </div>
       <div id='<%= event['id'] %>' class='event-summary collapsible'>
+        <div class='button-row row'>
+          <%= button_to 'Accept', { action: 'update', id: event.id }, { class: 'btn btn-success event-controls accept-event', method: 'put' } %>
+          <%= button_to 'Reject', { action: 'destroy', id: event.id }, { class: 'btn btn-danger event-controls reject-event', method: 'delete' } %>
+        </div>
         <%= link_to image_tag(event.parsed_image_url), event.parsed_url %>
         <p><%= event.parsed_description %></p>
         <p><%= event.parsed_contact %></p>
@@ -32,7 +34,6 @@
 
 <script>
 var coll = document.getElementsByClassName('event-name-row');
-var i;
 
 for (i = 0; i < coll.length; i++) {
   coll[i].addEventListener('click', function() {
@@ -43,6 +44,18 @@ for (i = 0; i < coll.length; i++) {
     } else {
       content.style.maxHeight = content.scrollHeight + 'px';
     }
+  });
+}
+
+var buttons = document.getElementsByClassName('button-row');
+
+for (i = 0; i < buttons.length; i++) {
+  row = buttons[i]
+  row.addEventListener('click', function() {
+    row.classList.add('fading');
+    setTimeout(function() {
+      row.remove();
+    }, 1000);
   });
 }
 </script>
