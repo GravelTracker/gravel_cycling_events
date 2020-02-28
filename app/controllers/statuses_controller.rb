@@ -26,7 +26,7 @@ class StatusesController < ApplicationController
   private
 
   def build_status
-    Status.build_status(Status.all)
+    Status.build_status(Status.fetch_status)
   end
 
   def calculate_uptime

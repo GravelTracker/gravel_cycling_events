@@ -44,7 +44,39 @@ class Status
       }
     end
 
+    def fetch_status
+      return parsed_cache if cached_status.present? && cached_status_not_expired?
+
+      status_list = Status.limit(192).map do |status|
+        {
+          'status_code' => status.status_code,
+          'post_time' => status.post_time
+        }
+      end
+      redis.set('status', status_list.to_json)
+      status_list
+    end
+
     private
+
+    def cached_status
+      redis.get('status')
+    end
+
+    def parsed_cache
+      JSON.parse(cached_status).map! do |status|
+        status['post_time'] = status['post_time'].to_datetime
+        status
+      end
+    end
+
+    def cached_status_not_expired?
+      parsed_cache.first['post_time'].to_datetime + 15.minutes < DateTime.current
+    end
+
+    def redis
+      Redis.new
+    end
 
     def default?(record)
       record['default'].presence == true
