@@ -53,14 +53,14 @@ class Status
           'post_time' => status.post_time
         }
       end
-      redis.set('status', status_list.to_json)
+      $redis.set('status', status_list.to_json)
       status_list
     end
 
     private
 
     def cached_status
-      redis.get('status')
+      $redis.get('status')
     end
 
     def parsed_cache
@@ -72,10 +72,6 @@ class Status
 
     def cached_status_not_expired?
       parsed_cache.first['post_time'].to_datetime + 15.minutes < DateTime.current
-    end
-
-    def redis
-      Redis.new
     end
 
     def default?(record)

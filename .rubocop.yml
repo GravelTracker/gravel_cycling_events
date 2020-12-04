@@ -40,3 +40,7 @@ Style/ClassAndModuleChildren:
 
 Style/FormatStringToken:
   Enabled: false
+
+Style/GlobalVars:
+  AllowedVariables:
+    - $redis
