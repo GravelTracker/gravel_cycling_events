@@ -91,6 +91,7 @@ class Status
       while interval({ 'post_time' => DateTime.current }, result.last) > 1
         dummy_record = result.last
         dummy_record['post_time'] += 15.minutes
+        dummy_record['status_code'] = 'offline'
         result << dummy_record
       end
       result
