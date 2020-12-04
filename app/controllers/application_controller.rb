@@ -7,8 +7,7 @@ class ApplicationController < ActionController::Base
   before_action :set_bot_status
 
   def set_bot_status
-    last_status = Status.count.positive? ? Status.last : Status.default_record
-    @bot_status_color = last_status['status_code'] == 'success' ? 'success' : 'danger'
+    @bot_status = last_status.status_code
   end
 
   protected
@@ -20,5 +19,18 @@ class ApplicationController < ActionController::Base
                                                          password_confirmation
                                                          remember_me
                                                          sign_up_code])
+  end
+
+  def last_status
+    use_last_status? ? Status.last : Status.default_record
+  end
+
+  def use_last_status?
+    Status.count.positive? &&
+      time_difference_in_minutes < 20.minutes # Use a small buffer of 5 minutes in case upload is pending
+  end
+
+  def time_difference_in_minutes
+    (DateTime.current.to_i - Status.last.post_time.to_i) / 1.minute
   end
 end
